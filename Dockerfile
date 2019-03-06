@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y  \
     apt-get clean autoclean && \
     apt-get autoremove -y && \
     pip install ws4py==0.3.2 && \
-    pip install tornado && \    
+    pip install tornado==4.3 && \
     ln -s /usr/bin/python2.7 /usr/bin/python ; ln -s -f bash /bin/sh
 
 WORKDIR /opt
@@ -68,6 +68,17 @@ RUN git clone https://github.com/kaldi-asr/kaldi && \
     cd /opt && git clone https://github.com/alumae/kaldi-gstreamer-server.git && \
     rm -rf /opt/kaldi-gstreamer-server/.git/ && \
     rm -rf /opt/kaldi-gstreamer-server/test/
+
+RUN mkdir -p /opt/models && \
+    cd models && \
+    wget https://phon.ioc.ee/~tanela/tedlium_nnet_ms_sp_online.tgz --no-check-certificate && \
+    tar -zxvf tedlium_nnet_ms_sp_online.tgz && \
+    rm tedlium_nnet_ms_sp_online.tgz && \
+    wget https://raw.githubusercontent.com/alumae/kaldi-gstreamer-server/master/sample_english_nnet2.yaml -P /opt/models && \
+    sed -i 's:full-post-processor:#full-post-processor:g' /media/kaldi_models/sample_english_nnet2.yaml && \
+    sed -i 's:test/models:/opt/models:g' /opt/models/sample_english_nnet2.yaml && \
+    sed -i 's:test/models:/opt/models:g' /opt/models/english/tedlium_nnet_ms_sp_online/conf/ivector_extractor.conf && \
+    sed -i 's:test/models:/opt/models:g' /opt/models/english/tedlium_nnet_ms_sp_online/conf/online_nnet2_decoding.conf    
 
 COPY start.sh stop.sh /opt/
 
