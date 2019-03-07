@@ -80,7 +80,7 @@ RUN mkdir -p /opt/models && \
     sed -i 's:test/models:/opt/models:g' /opt/models/english/tedlium_nnet_ms_sp_online/conf/ivector_extractor.conf && \
     sed -i 's:test/models:/opt/models:g' /opt/models/english/tedlium_nnet_ms_sp_online/conf/online_nnet2_decoding.conf    
 
-RUN pip install futures
+RUN pip install futures && apt-get install -y supervisor
 
 COPY start.sh stop.sh /opt/
 
