@@ -75,7 +75,7 @@ RUN mkdir -p /opt/models && \
     tar -zxvf tedlium_nnet_ms_sp_online.tgz && \
     rm tedlium_nnet_ms_sp_online.tgz && \
     wget https://raw.githubusercontent.com/alumae/kaldi-gstreamer-server/master/sample_english_nnet2.yaml -P /opt/models && \
-    sed -i 's:full-post-processor:#full-post-processor:g' /media/models/sample_english_nnet2.yaml && \
+    sed -i 's:full-post-processor:#full-post-processor:g' /opt/models/sample_english_nnet2.yaml && \
     sed -i 's:test/models:/opt/models:g' /opt/models/sample_english_nnet2.yaml && \
     sed -i 's:test/models:/opt/models:g' /opt/models/english/tedlium_nnet_ms_sp_online/conf/ivector_extractor.conf && \
     sed -i 's:test/models:/opt/models:g' /opt/models/english/tedlium_nnet_ms_sp_online/conf/online_nnet2_decoding.conf    
