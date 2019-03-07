@@ -82,5 +82,12 @@ RUN mkdir -p /opt/models && \
 
 COPY start.sh stop.sh /opt/
 
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
 RUN chmod +x /opt/start.sh && \
     chmod +x /opt/stop.sh 
+
+EXPOSE 80
+
+CMD ["/usr/bin/supervisord"]
+
