@@ -51,14 +51,18 @@ RUN git clone https://github.com/kaldi-asr/kaldi && \
     cd /opt/kaldi/tools && \
     ./extras/install_openblas.sh && \
     make -j $(nproc) && \
-    ./install_portaudio.sh && \
-    /opt/kaldi/tools/extras/install_mkl.sh && \
-    cd /opt/kaldi/src && ./configure --shared && \
+    ./install_portaudio.sh 
+#     && \
+#    /opt/kaldi/tools/extras/install_mkl.sh
+
+RUN cd /opt/kaldi/src && ./configure --shared && \
     sed -i '/-g # -O0 -DKALDI_PARANOID/c\-O3 -DNDEBUG' kaldi.mk && \
-    make clean -j $(nproc) && make -j $(nproc) depend && make -j $(nproc) && \
-    cd /opt/kaldi/src/online && make depend -j $(nproc) && make -j $(nproc) && \
-    cd /opt/kaldi/src/gst-plugin && sed -i 's/-lmkl_p4n//g' Makefile && make depend -j $(nproc) && make -j $(nproc) && \
-    cd /opt && \
+    make clean -j $(nproc) && make -j $(nproc) depend && make -j $(nproc)
+
+RUN cd /opt/kaldi/src/online && make depend -j $(nproc) && make -j $(nproc) && \
+    cd /opt/kaldi/src/gst-plugin && sed -i 's/-lmkl_p4n//g' Makefile && make depend -j $(nproc) && make -j $(nproc)
+
+RUN cd /opt && \
     git clone https://github.com/alumae/gst-kaldi-nnet2-online.git && \
     cd /opt/gst-kaldi-nnet2-online/src && \
     sed -i '/KALDI_ROOT?=\/home\/tanel\/tools\/kaldi-trunk/c\KALDI_ROOT?=\/opt\/kaldi' Makefile && \
